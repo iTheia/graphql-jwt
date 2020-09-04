@@ -8,6 +8,8 @@ import {
 	createRefreshToken,
 	sendRefreshToken,
 } from '../middlewares';
+import { verify } from 'jsonwebtoken';
+import { config } from '../config';
 
 @Resolver()
 export class UserResolver {
@@ -16,6 +18,29 @@ export class UserResolver {
 		return 'hello';
 	}
 
+	@Query(() => User, { nullable: true })
+	myProfile(@Ctx() context: MyContext) {
+		try {
+			const authorization = context.req.headers['authorization'];
+
+			if (!authorization) {
+				return null;
+			}
+
+			const token = authorization.split(' ')[1];
+			const payload: any = verify(token, config.accessToken!);
+			return User.findOne(payload.userId);
+		} catch (err) {
+			console.log(err);
+			return null;
+		}
+	}
+
+	@Mutation(() => Boolean)
+	async logout(@Ctx() { res }: MyContext) {
+		sendRefreshToken(res, '');
+		return true;
+	}
 	@Mutation(() => LoginResponse)
 	async login(
 		@Arg('email') email: string,

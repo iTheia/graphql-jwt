@@ -19,7 +19,7 @@ export const startServer = async () => {
 		app.use(
 			cors({
 				credentials: true,
-				origin: '*',
+				origin: 'http://localhost:3000',
 			})
 		);
 		app.use(router);
@@ -31,7 +31,7 @@ export const startServer = async () => {
 			}),
 			context: ({ req, res }) => ({ req, res }),
 		});
-		apolloServer.applyMiddleware({ app });
+		apolloServer.applyMiddleware({ app, cors: false });
 		server.listen(config.port);
 	} catch (error) {
 		console.log(error);

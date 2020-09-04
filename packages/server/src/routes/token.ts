@@ -14,7 +14,7 @@ tokenRouter.post('/refresh', async (req, res) => {
 			throw new Error('not valid login');
 		}
 		const payload: any = verify(token, config.refreshToken);
-		const user = await User.findOne({ id: payload.id });
+		const user = await User.findOne(payload.id);
 		if (!user) {
 			throw new Error('not valid login');
 		}
@@ -27,6 +27,7 @@ tokenRouter.post('/refresh', async (req, res) => {
 			accessToken: createAccessToken(user),
 		});
 	} catch (error) {
+		console.log(error);
 		return res.send({ error: true, accessToken: '' });
 	}
 });

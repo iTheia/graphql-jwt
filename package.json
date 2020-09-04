@@ -1,7 +1,9 @@
 {
 	"name": "graphql-jwt",
 	"version": "1.0.0",
-	"main": "index.js",
+	"scripts": {
+		"dev": "concurrently \" cd packages/server&yarn dev\" \"cd packages/web&yarn start\""
+	},
 	"private": true,
 	"workspaces": [
 		"packages/*"
