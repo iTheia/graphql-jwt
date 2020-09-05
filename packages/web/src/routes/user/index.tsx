@@ -1,12 +1,13 @@
 import React from 'react';
-import { getToken } from '../../services/variables';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { ProfilePage } from '../../views/user/Profile';
 
 interface Props {}
 
-export const UserRoutes: React.FC<Props> = () => {
-	return (
-		<div>
-			<button onClick={() => console.log(getToken())}>asd</button>
-		</div>
-	);
-};
+export const UserRoutes: React.FC<Props> = () => (
+	<BrowserRouter>
+		<Switch>
+			<Route path="/" component={ProfilePage} />
+		</Switch>
+	</BrowserRouter>
+);

@@ -1,20 +1,19 @@
 import React, { useContext, useEffect } from 'react';
-import { AuthContext } from '../context/Auth';
 import { AuthRouter } from './auth';
 import { UserRoutes } from './user';
-import { AppContext } from '../context/App';
 import { FullSizeLoaderComponent } from '../components/FullSizeLoader';
+import { useMyProfileQuery } from '../generated';
 
 interface Props {}
 
 export const Routes: React.FC<Props> = () => {
-	const { currentUser } = useContext(AuthContext);
-	const { isLoading } = useContext(AppContext);
+	const { data, loading } = useMyProfileQuery();
 
-	useEffect(() => {}, [currentUser]);
+	useEffect(() => {
+		console.log(data);
+	}, [data?.myProfile]);
 
-	if (isLoading) return <FullSizeLoaderComponent />;
-	else if (currentUser === false || currentUser === null)
-		return <AuthRouter />;
+	if (loading) return <FullSizeLoaderComponent />;
+	if (data?.myProfile === null) return <AuthRouter />;
 	else return <UserRoutes />;
 };
